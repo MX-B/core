@@ -3,6 +3,7 @@ package io.gr1d.core.upload;
 import com.google.cloud.storage.*;
 import com.google.cloud.storage.Acl.Role;
 import com.google.cloud.storage.Acl.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -10,11 +11,15 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.Collections;
 
+import static java.util.Optional.ofNullable;
+
 /**
  * File uploader to Google Storage
  *
  * @author Raúl Sola
+ * @author Sérgio Marcelino
  */
+@Slf4j
 @Component("UploadStrategy.STORAGE")
 public class CloudStorageStrategy implements UploadStrategy {
 
@@ -39,12 +44,17 @@ public class CloudStorageStrategy implements UploadStrategy {
 
     @Override
     public UploadedFile getUploadData(final String uploadId) {
-        final BlobInfo blobInfo = storage.get(BlobId.of(bucketName, uploadId));
-        return fromBlobInfo(blobInfo);
+        return ofNullable(storage.get(BlobId.of(bucketName, uploadId)))
+                .map(this::fromBlobInfo)
+                .orElseGet(() -> {
+                    log.error("Upload not found for ID: {}", uploadId);
+                    return null;
+                });
     }
 
     private UploadedFile fromBlobInfo(final BlobInfo blobInfo) {
-        return new UploadedFile(blobInfo.getGeneratedId(), blobInfo.getMediaLink());
+        final String fileId = blobInfo.getBlobId().getName();
+        return new UploadedFile(fileId, blobInfo.getMediaLink());
     }
 
     private BlobInfo createBlobInfo(final String fileName, final String path, final UploadScope scope) {

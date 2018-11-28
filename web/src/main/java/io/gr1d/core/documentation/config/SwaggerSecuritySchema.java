@@ -7,9 +7,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import springfox.documentation.service.SecurityScheme;
 
-import java.util.Optional;
-
 import javax.annotation.PostConstruct;
+import java.util.Optional;
 
 @Component
 @ConfigurationProperties(prefix = "swagger.security")
