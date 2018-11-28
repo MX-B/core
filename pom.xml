@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.gr1d</groupId>
+    <artifactId>gr1d-core-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>web</module>
+        <module>datasource</module>
+        <module>email</module>
+        <module>upload</module>
+    </modules>
+
+    <organization>
+        <name>GR1D</name>
+        <url>https://gr1d.io</url>
+    </organization>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.2.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+
+        <springfox-version>2.9.2</springfox-version>
+        <fixture-factory-version>3.1.0</fixture-factory-version>
+    </properties>
+
+
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://artifactory.gr1d.io/artifactory/libs-release</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>artifactory-snapshots</name>
+            <url>http://artifactory.gr1d.io/artifactory/libs-snapshot</url>
+        </snapshotRepository>
+
+        <repository>
+            <id>central</id>
+            <name>artifactory-releases</name>
+            <url>https://artifactory.gr1d.io/artifactory/libs-release</url>
+        </repository>
+    </distributionManagement>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${springfox-version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${springfox-version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>26.0-jre</version>
+            </dependency>
+
+            <dependency>
+                <groupId>br.com.six2six</groupId>
+                <artifactId>fixture-factory</artifactId>
+                <version>${fixture-factory-version}</version>
+                <scope>test</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+
+</project>
