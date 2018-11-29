@@ -2,9 +2,7 @@ package io.gr1d.core.controller;
 
 import io.gr1d.core.exception.Gr1dHttpException;
 import io.gr1d.core.exception.Gr1dHttpRuntimeException;
-import io.gr1d.core.response.Gr1dError;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import io.gr1d.core.datasource.response.Gr1dError;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

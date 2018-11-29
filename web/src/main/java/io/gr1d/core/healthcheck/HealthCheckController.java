@@ -2,7 +2,7 @@ package io.gr1d.core.healthcheck;
 
 import io.gr1d.core.healthcheck.response.HealthCheckResponse;
 import io.gr1d.core.healthcheck.response.enums.ServiceStatus;
-import io.gr1d.core.response.Gr1dError;
+import io.gr1d.core.datasource.response.Gr1dError;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

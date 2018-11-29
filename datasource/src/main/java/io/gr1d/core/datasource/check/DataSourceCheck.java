@@ -1,4 +1,4 @@
-package io.gr1d.core.check;
+package io.gr1d.core.datasource.check;
 
 import io.gr1d.core.healthcheck.CheckService;
 import io.gr1d.core.healthcheck.response.ServiceInfo;

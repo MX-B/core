@@ -14,6 +14,7 @@
         <module>datasource</module>
         <module>email</module>
         <module>upload</module>
+        <module>core</module>
     </modules>
 
     <organization>
@@ -66,6 +67,12 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>io.gr1d</groupId>
+                <artifactId>gr1d-core</artifactId>
+                <version>${core-version}</version>
+                <scope>compile</scope>
+            </dependency>
             <dependency>
                 <groupId>io.gr1d</groupId>
                 <artifactId>gr1d-core-web</artifactId>

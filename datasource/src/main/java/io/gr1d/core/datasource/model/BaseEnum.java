@@ -1,4 +1,4 @@
-package io.gr1d.core.model;
+package io.gr1d.core.datasource.model;
 
 import lombok.Getter;
 import lombok.Setter;
