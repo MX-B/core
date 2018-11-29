@@ -14,6 +14,11 @@ public class MockUploadStrategy implements UploadStrategy {
     }
 
     @Override
+    public UploadedFile upload(byte[] file, String fileName, String path, UploadScope scope) {
+        return new UploadedFile("image", "http://www.test.com/image");
+    }
+
+    @Override
     public UploadedFile getUploadData(final String uploadId) {
         return new UploadedFile("image", "http://www.test.com/image");
     }
