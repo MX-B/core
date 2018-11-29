@@ -2,7 +2,7 @@ package io.gr1d.core.controller;
 
 import io.gr1d.core.TestUtils;
 import io.gr1d.core.exception.Gr1dHttpException;
-import io.gr1d.core.datasource.response.Gr1dError;
+import io.gr1d.core.response.Gr1dError;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.junit.Before;
 import org.junit.Test;

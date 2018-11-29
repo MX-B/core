@@ -1,4 +1,4 @@
-package io.gr1d.core.datasource.response;
+package io.gr1d.core.response;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

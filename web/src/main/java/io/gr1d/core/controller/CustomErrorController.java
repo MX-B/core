@@ -1,6 +1,6 @@
 package io.gr1d.core.controller;
 
-import io.gr1d.core.datasource.response.Gr1dError;
+import io.gr1d.core.response.Gr1dError;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
