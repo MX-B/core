@@ -1,23 +1,38 @@
 package io.gr1d.core.strategy;
 
-import io.gr1d.core.SpringTestApplication;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.context.ApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = SpringTestApplication.class)
 public class StrategyResolverTest {
 
-    @Autowired
     private StrategyResolver resolver;
+
+    @Mock
+    private ApplicationContext applicationContext;
+
+    @Before
+    public void init() {
+        initMocks(this);
+        resolver = new StrategyResolver(applicationContext);
+    }
 
     @Test
     public void testResolveStrategy() {
+        when(applicationContext.getBean(eq("LaughStrategy.LOL"), same(LaughStrategy.class))).thenReturn(new LolLaughStrategy());
+        when(applicationContext.getBean(eq("LaughStrategy.ROFL"), same(LaughStrategy.class))).thenReturn(new RoflLaughStrategy());
+        when(applicationContext.getBean(eq("LaughStrategy.LMAO"), same(LaughStrategy.class))).thenThrow(NoSuchBeanDefinitionException.class);
+
         final LaughStrategy laughStrategy = resolver.resolve(LaughStrategy.class, "LOL");
         assertThat(laughStrategy.laugh("Here`s some very silly joke")).isEqualTo("LOL");
 
