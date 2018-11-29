@@ -16,6 +16,7 @@ public class SwaggerController {
 
     @RequestMapping(method = RequestMethod.GET, path = "")
     public void swagger(final HttpServletResponse response) throws IOException {
+        response.addHeader("content-type", "text/html");
         try (final InputStream stream = getClass().getClassLoader().getResourceAsStream("swagger-ui.html")) {
             IOUtils.copy(stream, response.getOutputStream());
         }
