@@ -1,8 +1,7 @@
 package io.gr1d.core.controller;
 
 import io.gr1d.core.response.Gr1dError;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
@@ -27,9 +26,9 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
  *
  * @author Sérgio Marcelino
  */
+@Slf4j
 @RestController("${server.error.path:${error.path:/error}}")
 public class CustomErrorController implements ErrorController {
-    private static final Logger LOG = LoggerFactory.getLogger(CustomErrorController.class);
 
     private final String errorPath;
     private final ErrorAttributes errorAttributes;
@@ -60,6 +59,6 @@ public class CustomErrorController implements ErrorController {
     }
 
     private Map<String, Object> getErrorAttributes(final HttpServletRequest request) {
-        return errorAttributes.getErrorAttributes(new ServletWebRequest(request), LOG.isDebugEnabled());
+        return errorAttributes.getErrorAttributes(new ServletWebRequest(request), log.isDebugEnabled());
     }
 }

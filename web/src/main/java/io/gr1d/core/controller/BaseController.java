@@ -1,9 +1,11 @@
 package io.gr1d.core.controller;
 
 import io.gr1d.core.exception.Gr1dHttpException;
+import io.gr1d.core.exception.Gr1dHttpRuntimeException;
 import io.gr1d.core.response.Gr1dError;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -26,8 +28,9 @@ import java.util.stream.Collectors;
  * @author Sérgio Marcelino
  */
 @Slf4j
+@Setter
 @RestControllerAdvice
-public abstract class BaseController {
+public class BaseController {
 
     public static final String JSON = MediaType.APPLICATION_JSON_UTF8_VALUE;
     public static final String XML = MediaType.APPLICATION_XML_VALUE;
@@ -56,19 +59,27 @@ public abstract class BaseController {
      * into a ResponseEntity
      */
     @ExceptionHandler(Gr1dHttpException.class)
-    public ResponseEntity<Collection<Error>> handleException(final Gr1dHttpException exception, final Locale locale) {
+    public ResponseEntity<Collection<Gr1dError>> handleException(final Gr1dHttpException exception, final Locale locale) {
         log.debug("Gr1dHttpException while invoking Controller method", exception);
 
         final String message = messageSource.getMessage(exception.getMessage(), exception.getArguments(), locale);
-        final Collection<Error> errors = Collections.singletonList(new Error(message));
+        final Collection<Gr1dError> errors = Collections.singletonList(new Gr1dError("ExceptionWithStatus", message));
 
         return ResponseEntity.status(exception.getHttpStatus()).body(errors);
     }
 
-    @Getter
-    @AllArgsConstructor
-    private class Error {
-        private final String message;
+    /**
+     * The default Gr1d Exception, everything is set and converted
+     * into a ResponseEntity
+     */
+    @ExceptionHandler(Gr1dHttpRuntimeException.class)
+    public ResponseEntity<Collection<Gr1dError>> handleException(final Gr1dHttpRuntimeException exception, final Locale locale) {
+        log.debug("Gr1dHttpException while invoking Controller method", exception);
+
+        final String message = messageSource.getMessage(exception.getMessage(), exception.getArguments(), locale);
+        final Collection<Gr1dError> errors = Collections.singletonList(new Gr1dError("ExceptionWithStatus", message));
+
+        return ResponseEntity.status(exception.getHttpStatus()).body(errors);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
