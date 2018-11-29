@@ -30,6 +30,18 @@ public class UploadService {
 
     /**
      * Uploads a new File
+     * @param file byte[] file
+     * @param fileName file name to store
+     * @param path path to folder
+     * @return generated
+     */
+    public UploadedFile upload(byte[] file, final String fileName, final String path, final UploadScope scope) {
+        return resolveStrategy().map(strategy -> strategy.upload(file, fileName, path, scope))
+                .orElse(null);
+    }
+
+    /**
+     * Uploads a new File
      * @param fileBase64 base64 data without prefix
      * @param fileName file name to store
      * @param path path to folder
