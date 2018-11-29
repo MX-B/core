@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.Collections;
@@ -43,7 +42,13 @@ public class CloudStorageStrategy implements UploadStrategy {
     @Override
     public UploadedFile upload(final String fileBase64, final String fileName, final String path, final UploadScope scope) {
         final byte byteArray[] = Base64.getMimeDecoder().decode(fileBase64);
-        final BlobInfo blobInfo = storage.create(createBlobInfo(fileName, path, scope), byteArray);
+
+        return this.upload(byteArray, fileName, path, scope);
+    }
+
+    @Override
+    public UploadedFile upload(byte[] file, String fileName, String path, UploadScope scope) {
+        final BlobInfo blobInfo = storage.create(createBlobInfo(fileName, path, scope), file);
         return fromBlobInfo(blobInfo, scope);
     }
 
