@@ -65,7 +65,7 @@ public class CloudStorageStrategy implements UploadStrategy {
     private UploadedFile fromBlobInfo(final BlobInfo blobInfo, final UploadScope scope) {
         final String fileId = blobInfo.getBlobId().getName();
         final String url = scope == UploadScope.PUBLIC
-                ? blobInfo.getSelfLink()
+                ? blobInfo.getMediaLink()
                 : storage.signUrl(blobInfo, signUrlDuration, TimeUnit.MINUTES).toString();
         return new UploadedFile(fileId, url);
     }
