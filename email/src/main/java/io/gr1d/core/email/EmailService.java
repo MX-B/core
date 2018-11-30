@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Service to use to send notifications
@@ -33,20 +32,31 @@ public class EmailService {
      * <p>
      * The {@code context} will be injected in the request as a {@code dynamic_template_data} field
      */
-    public void send(final String from, final String to, final String subject, final String template, final Map<String, Object> context) {
+    public void send(final Email email) {
         try {
-            log.info("Sending Sendgrid email to {} - subject={}, template={}, context={}", to, subject, template, context);
+            log.info("Sending Sendgrid email from {}, to {} - subject={}, template={}, context={}",
+                    email.getFrom(), email.getTo(), email.getSubject(), email.getTemplate(), email.getContext());
 
-            final com.sendgrid.Email emailFrom = new com.sendgrid.Email(from);
-            final com.sendgrid.Email emailTo = new com.sendgrid.Email(to);
+            final com.sendgrid.Email emailFrom = new com.sendgrid.Email(email.getFrom());
+            final com.sendgrid.Email emailTo = new com.sendgrid.Email(email.getTo());
             final Mail mail = new Mail();
             mail.setFrom(emailFrom);
-            mail.setSubject(subject);
-            mail.setTemplateId(template);
+            mail.setSubject(email.getSubject());
+            mail.setTemplateId(email.getTemplate());
 
             final Personalization personalization = new Personalization();
             personalization.addTo(emailTo);
             mail.addPersonalization(personalization);
+
+            email.getAttachments().forEach(item -> {
+                final Attachments attachment = new Attachments();
+                attachment.setDisposition("attachment");
+                attachment.setContent(item.getBase64());
+                attachment.setContentId(item.getId());
+                attachment.setFilename(item.getFileName());
+                attachment.setType(item.getMimeType());
+                mail.addAttachments(attachment);
+            });
 
             final String prePayload = mail.build();
 
@@ -56,7 +66,7 @@ public class EmailService {
             final StringBuilder finalPayload = new StringBuilder();
             finalPayload.append(prePayload.substring(0, start));
             finalPayload.append("\"dynamic_template_data\":");
-            finalPayload.append(objectMapper.writeValueAsString(context));
+            finalPayload.append(objectMapper.writeValueAsString(email.getContext()));
             finalPayload.append(",");
             finalPayload.append(prePayload.substring(start));
 

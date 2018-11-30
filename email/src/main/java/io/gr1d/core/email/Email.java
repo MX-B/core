@@ -1,9 +1,9 @@
 package io.gr1d.core.email;
 
+import lombok.Getter;
 import org.springframework.util.Assert;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This is an Email representation
@@ -12,6 +12,7 @@ import java.util.Map;
  *
  * @author Sérgio Marcelino
  */
+@Getter
 public class Email {
     private final EmailService emailService;
 
@@ -20,9 +21,11 @@ public class Email {
     private String subject;
     private String template;
     private Map<String, Object> context;
+    private List<EmailAttachment> attachments;
 
     Email(final EmailService emailService) {
         this.emailService = emailService;
+        attachments = new LinkedList<>();
     }
 
     /**
@@ -32,6 +35,33 @@ public class Email {
      */
     public Email template(final String template) {
         this.template = template;
+        return this;
+    }
+
+    /**
+     * Adds an attachment to the email
+     *
+     * @param id The id to reference the attachment in the email body
+     * @param base64 File data as base64
+     * @param mimeType The file type, eg. `application/pdf`
+     * @param fileName The file name to be shown in the email
+     */
+    public Email addAttachment(final String id, final String base64, final String mimeType, final String fileName) {
+        this.attachments.add(new EmailAttachment(id, base64, mimeType, fileName));
+        return this;
+    }
+
+    /**
+     * Adds an attachment to the email
+     *
+     * @param id The id to reference the attachment in the email body
+     * @param fileData File data as byte array
+     * @param mimeType The file type, eg. `application/pdf`
+     * @param fileName The file name to be shown in the email
+     */
+    public Email addAttachment(final String id, final byte[] fileData, final String mimeType, final String fileName) {
+        final String base64 = Base64.getEncoder().encodeToString(fileData);
+        this.attachments.add(new EmailAttachment(id, base64, mimeType, fileName));
         return this;
     }
 
@@ -93,7 +123,7 @@ public class Email {
         Assert.notNull(template, "Property `template` is required");
         Assert.isTrue(!template.isEmpty(), "Property `template` is required");
 
-        emailService.send(from, to, subject, template, context);
+        emailService.send(this);
         return this;
     }
 }
