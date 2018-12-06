@@ -41,10 +41,15 @@ public class CloudStorageStrategy implements UploadStrategy {
         this.bucketName = bucketName;
         this.signUrlDuration = signUrlDuration;
 
-        try (final ByteArrayInputStream stream = new ByteArrayInputStream(new Gson().toJson(credentials).getBytes())) {
-            final GoogleCredentials cred = GoogleCredentials.fromStream(stream);
-            this.storage = StorageOptions.newBuilder().setCredentials(cred).build().getService();
+        if (credentials.getType() != null) {
+            try (final ByteArrayInputStream stream = new ByteArrayInputStream(new Gson().toJson(credentials).replaceAll("\\\\n", "\\n").getBytes())) {
+                final GoogleCredentials cred = GoogleCredentials.fromStream(stream);
+                this.storage = StorageOptions.newBuilder().setCredentials(cred).build().getService();
+            }
+        } else {
+            this.storage = StorageOptions.getDefaultInstance().getService();
         }
+
     }
 
     @Override
