@@ -1,12 +1,17 @@
 package io.gr1d.core.upload;
 
+import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
 import com.google.cloud.storage.Acl.Role;
 import com.google.cloud.storage.Acl.User;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.Collections;
@@ -22,21 +27,29 @@ import static java.util.Optional.ofNullable;
  */
 @Slf4j
 @Component("UploadStrategy.STORAGE")
+@ConditionalOnProperty(value = "gr1d.upload.strategy", havingValue = "STORAGE")
 public class CloudStorageStrategy implements UploadStrategy {
 
-    private static Storage storage;
+    private Storage storage;
 
     private final String bucketName;
     private final long signUrlDuration;
 
-    static {
-        storage = StorageOptions.getDefaultInstance().getService();
-    }
-
     public CloudStorageStrategy(@Value("${gr1d.upload.cloudStorage.bucketName:}") final String bucketName,
-                                @Value("${gr1d.upload.cloudStorage.signUrlDuration:120}") final long signUrlDuration) {
+                                @Value("${gr1d.upload.cloudStorage.signUrlDuration:120}") final long signUrlDuration,
+                                final io.gr1d.core.upload.GoogleCredentials credentials) throws IOException {
         this.bucketName = bucketName;
         this.signUrlDuration = signUrlDuration;
+
+        if (credentials.getType() != null) {
+            try (final ByteArrayInputStream stream = new ByteArrayInputStream(new Gson().toJson(credentials).replaceAll("\\\\n", "\\n").getBytes())) {
+                final GoogleCredentials cred = GoogleCredentials.fromStream(stream);
+                this.storage = StorageOptions.newBuilder().setCredentials(cred).build().getService();
+            }
+        } else {
+            this.storage = StorageOptions.getDefaultInstance().getService();
+        }
+
     }
 
     @Override
