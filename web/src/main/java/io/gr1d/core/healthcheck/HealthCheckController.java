@@ -20,11 +20,15 @@ public class HealthCheckController {
 	private static final String ROUTE_BASIC = "/hc";
 	private static final String ROUTE_COMPLETE = ROUTE_BASIC + "/complete";
 	
+	private final HealthcheckService service;
+
 	@Autowired
-	private HealthcheckService service;
-	
+	public HealthCheckController(final HealthcheckService service) {
+		this.service = service;
+	}
+
 	@GetMapping(ROUTE_BASIC)
-	@ApiOperation(value = "Health Check Service", notes = "Check all system's services and responds if ok or not")
+	@ApiOperation(value = "Health Check Service", notes = "Check all system's services and responds if ok or not", tags = "Healthcheck")
     @ApiResponses({
         @ApiResponse(code = 200, message = "All Services working fine"),
         @ApiResponse(code = 503, message = "Any Service is Down")
@@ -38,14 +42,14 @@ public class HealthCheckController {
 	}
 
 	@GetMapping(ROUTE_COMPLETE)
-	@ApiOperation(value = "Health Check Service", notes = "Check all system's services and responds a detailed info")
+	@ApiOperation(value = "Health Check Service", notes = "Check all system's services and responds a detailed info", tags = "Healthcheck")
     @ApiResponses({
         @ApiResponse(code = 200, message = "All Services working fine", response = HealthCheckResponse.class),
         @ApiResponse(code = 401, message = "Access unauthorized", response = Gr1dError[].class),
         @ApiResponse(code = 403, message = "Access forbidden", response = Gr1dError[].class),
         @ApiResponse(code = 503, message = "Any Service is Down", response = HealthCheckResponse.class)
     })
-	public ResponseEntity<HealthCheckResponse> completeHealthCheck() throws Exception{
+	public ResponseEntity<HealthCheckResponse> completeHealthCheck() {
 		log.trace("function=completeHealthCheck status=init");
 		HealthCheckResponse res = service.check();
 		HttpStatus status = getStatus(res);
