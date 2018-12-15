@@ -11,7 +11,8 @@
     <link href="https://gr1d-swagger-ui.firebaseapp.com/assets/css/style.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Barlow:400,400i,500,500i,600,600i" rel="stylesheet">
 
-    <link rel="icon" href="https://getbootstrap.com/favicon.ico">
+    <link rel="icon" href="https://i2.wp.com/innovation.gr1d.io/inc/uploads/2018/08/gr1d-site-icon-512x512.png?fit=32%2C32&#038;ssl=1" sizes="32x32" />
+    <link rel="icon" href="https://i2.wp.com/innovation.gr1d.io/inc/uploads/2018/08/gr1d-site-icon-512x512.png?fit=192%2C192&#038;ssl=1" sizes="192x192" />
 </head>
 
 <body data-spy="scroll" data-target="#resources_nav" data-offset="60">
@@ -72,6 +73,7 @@
         // if(typeof initOAuth == "function") {
         //     initOAuth()
         // }
+        $(document).attr('title', swaggerApi.info.title);
 
         $('pre code').each(function (i, e) {
           hljs.highlightBlock(e)

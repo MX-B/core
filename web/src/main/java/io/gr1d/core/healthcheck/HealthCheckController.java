@@ -10,7 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -27,7 +28,7 @@ public class HealthCheckController {
 		this.service = service;
 	}
 
-	@GetMapping(ROUTE_BASIC)
+	@RequestMapping(path = ROUTE_BASIC, method = RequestMethod.GET)
 	@ApiOperation(value = "Health Check Service", notes = "Check all system's services and responds if ok or not", tags = "Healthcheck")
     @ApiResponses({
         @ApiResponse(code = 200, message = "All Services working fine"),
@@ -41,7 +42,7 @@ public class HealthCheckController {
 		return ResponseEntity.status(status).body(res.getStatus());
 	}
 
-	@GetMapping(ROUTE_COMPLETE)
+	@RequestMapping(path = ROUTE_COMPLETE, method = RequestMethod.GET)
 	@ApiOperation(value = "Health Check Service", notes = "Check all system's services and responds a detailed info", tags = "Healthcheck")
     @ApiResponses({
         @ApiResponse(code = 200, message = "All Services working fine", response = HealthCheckResponse.class),

@@ -25,9 +25,6 @@ public class BaseEnum implements Serializable {
     @Column(nullable = false, length = 32)
     private String name;
 
-    @Column(nullable = false, length = 32)
-    private String description;
-
     public BaseEnum() {
         super();
     }
