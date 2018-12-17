@@ -2,14 +2,18 @@ package io.gr1d.core.datasource.model;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static com.google.common.base.CaseFormat.LOWER_CAMEL;
+import static com.google.common.base.CaseFormat.LOWER_UNDERSCORE;
 
 /**
  * This is the base Pageable class
@@ -18,39 +22,37 @@ import java.util.stream.Collectors;
  *
  * @author Sérgio Marcelino
  */
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Gr1dPageable implements Pageable {
+public class Gr1dPageable {
 
-    @ApiModelProperty(notes = "The sort property to request, starting with `-` indicates DESC")
-    public List<String> sort;
+    @ApiModelProperty(notes = "The sort property to request, starting with `-` indicates DESC", example = "-name")
+    private List<String> sort;
 
-    @ApiModelProperty(notes = "The page to request, default is 0")
-    public int page = 0;
+    @ApiModelProperty(notes = "The page to request, default is 0", example = "0")
+    private int page = 0;
 
-    @ApiModelProperty(notes = "The size of the page to request, default is 20, cannot be larger than 200 and less than 1")
-    public int pageSize = 20;
+    @ApiModelProperty(notes = "The size of the page to request, default is 20, cannot be larger than 200 and less than 1", example = "20")
+    private int page_size = 20;
 
     @ApiModelProperty(hidden = true)
-    public int getPageSize() {
-        return Math.max(1, Math.min(pageSize, 200));
+    public Pageable toPageable() {
+        return PageRequest.of(getFormattedPage(), getFormattedPageSize(), getFormattedSort());
     }
 
-    @Override
     @ApiModelProperty(hidden = true)
-    public int getPageNumber() {
+    private int getFormattedPageSize() {
+        return Math.max(1, Math.min(page_size, 200));
+    }
+
+    @ApiModelProperty(hidden = true)
+    private int getFormattedPage() {
         return Math.max(page, 0);
     }
 
-    @Override
     @ApiModelProperty(hidden = true)
-    public long getOffset() {
-        return getPageNumber() * getPageSize();
-    }
-
-    @ApiModelProperty(hidden = true)
-    public Sort getSort() {
+    private Sort getFormattedSort() {
         if (sort == null) return Sort.unsorted();
         final List<Sort.Order> orders = sort.stream()
                 .filter(Objects::nonNull)
@@ -62,31 +64,12 @@ public class Gr1dPageable implements Pageable {
     @ApiModelProperty(hidden = true)
     private Sort.Order getOrder(final String property) {
         return property.startsWith("-")
-                ? Sort.Order.desc(property.substring(1))
-                : Sort.Order.asc(property);
+                ? Sort.Order.desc(convert(property.substring(1)))
+                : Sort.Order.asc(convert(property));
     }
 
-    @Override
-    @ApiModelProperty(hidden = true)
-    public Pageable next() {
-        return new Gr1dPageable(sort, getPageNumber() + 1, getPageSize());
+    private String convert(final String property) {
+        return LOWER_UNDERSCORE.to(LOWER_CAMEL, property);
     }
 
-    @Override
-    @ApiModelProperty(hidden = true)
-    public Pageable previousOrFirst() {
-        return new Gr1dPageable(sort, Math.max(0, getPageNumber() - 1), getPageSize());
-    }
-
-    @Override
-    @ApiModelProperty(hidden = true)
-    public Pageable first() {
-        return new Gr1dPageable(sort, 0, getPageSize());
-    }
-
-    @Override
-    @ApiModelProperty(hidden = true)
-    public boolean hasPrevious() {
-        return getPageNumber() > 0;
-    }
 }
