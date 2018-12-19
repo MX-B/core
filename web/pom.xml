@@ -6,11 +6,7 @@
     <parent>
         <artifactId>gr1d-core-parent</artifactId>
         <groupId>io.gr1d</groupId>
-<<<<<<< ff00746faea61538806449812ebb00b8e196ea98
-        <version>1.0.2-SNAPSHOT</version>
-=======
-        <version>1.0.1-SNAPSHOT</version>
->>>>>>> Update pom version
+        <version>1.0.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
