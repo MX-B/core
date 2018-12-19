@@ -6,7 +6,11 @@
     <parent>
         <artifactId>gr1d-core-parent</artifactId>
         <groupId>io.gr1d</groupId>
+<<<<<<< ff00746faea61538806449812ebb00b8e196ea98
         <version>1.0.2-SNAPSHOT</version>
+=======
+        <version>1.0.1-SNAPSHOT</version>
+>>>>>>> Update pom version
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -65,13 +69,11 @@
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
-            <version>${springfox-version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>26.0-jre</version>
         </dependency>
 
         <!-- Logging -->
@@ -99,7 +101,6 @@
         <dependency>
             <groupId>br.com.six2six</groupId>
             <artifactId>fixture-factory</artifactId>
-            <version>3.1.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -108,7 +109,6 @@
         <plugins>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>copy-resources</id>

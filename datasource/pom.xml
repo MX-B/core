@@ -6,7 +6,7 @@
     <parent>
         <artifactId>gr1d-core-parent</artifactId>
         <groupId>io.gr1d</groupId>
-        <version>1.0.2-SNAPSHOT</version>
+        <version>1.0.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,13 +16,11 @@
         <dependency>
             <groupId>io.gr1d</groupId>
             <artifactId>gr1d-core</artifactId>
-            <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.gr1d</groupId>
             <artifactId>gr1d-core-web</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -77,7 +75,6 @@
         <dependency>
             <groupId>org.flywaydb.flyway-test-extensions</groupId>
             <artifactId>flyway-spring-test</artifactId>
-            <version>5.0.0</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>

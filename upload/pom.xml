@@ -6,7 +6,7 @@
     <parent>
         <artifactId>gr1d-core-parent</artifactId>
         <groupId>io.gr1d</groupId>
-        <version>1.0.2-SNAPSHOT</version>
+        <version>1.0.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,7 +16,6 @@
         <dependency>
             <groupId>io.gr1d</groupId>
             <artifactId>gr1d-core</artifactId>
-            <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -33,7 +32,6 @@
         <dependency>
             <groupId>com.google.cloud</groupId>
             <artifactId>google-cloud</artifactId>
-            <version>0.47.0-alpha</version>
         </dependency>
     </dependencies>
 
