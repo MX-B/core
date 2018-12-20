@@ -55,7 +55,9 @@ public class BaseModel implements Serializable {
     @PrePersist
     public void beforeSave() {
         createUuid(false);
-        createdAt = LocalDateTime.now();
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
     }
 
     @PreUpdate
