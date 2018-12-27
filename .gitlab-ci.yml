@@ -20,14 +20,15 @@ variables:
   DB_PASSWORD: passw0rd
 
 stages:
+#  - test
   - deploy
 
-executeTests:
-  stage: test
-  script:
-    - 'mvn $MAVEN_CLI_OPTS clean test -pl core'
-    - 'mvn $MAVEN_CLI_OPTS clean test -pl web'
-    - 'mvn $MAVEN_CLI_OPTS clean test -pl datasource'
+#executeTests:
+#  stage: test
+#  script:
+#    - 'mvn $MAVEN_CLI_OPTS clean test -pl core'
+#    - 'mvn $MAVEN_CLI_OPTS clean test -pl web'
+#    - 'mvn $MAVEN_CLI_OPTS clean test -pl datasource'
 
 deployToArtifactory:
   stage: deploy
