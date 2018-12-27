@@ -3,30 +3,31 @@ package io.gr1d.core.datasource.check;
 import io.gr1d.core.healthcheck.CheckService;
 import io.gr1d.core.healthcheck.response.ServiceInfo;
 import io.gr1d.core.healthcheck.response.enums.ServiceStatus;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
-import java.sql.SQLException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Component
 public class DataSourceCheck implements CheckService {
 
-    private final DataSource dataSource;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    @Autowired
-    public DataSourceCheck(final DataSource dataSource) {
-        this.dataSource = dataSource;
+    private final String datasourceUrl;
+
+    public DataSourceCheck(@Value("${spring.datasource.url}") final String datasourceUrl) {
+        this.datasourceUrl = datasourceUrl;
     }
 
     @Override
     public ServiceInfo check() {
         try {
-            dataSource.getConnection().isValid(5000);
-            final String url = dataSource.getConnection().getMetaData().getURL();
-            return new ServiceInfo("MySQL", url, ServiceStatus.LIVE, null);
-        } catch (SQLException e) {
-            return new ServiceInfo("MySQL", "", ServiceStatus.DOWN, e.getMessage());
+            entityManager.createNativeQuery("SELECT 'a'").getFirstResult();
+            return new ServiceInfo("MySQL", datasourceUrl, ServiceStatus.LIVE, null);
+        } catch (Exception e) {
+            return new ServiceInfo("MySQL", datasourceUrl, ServiceStatus.DOWN, e.getMessage());
         }
     }
 
