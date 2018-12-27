@@ -20,7 +20,7 @@ variables:
   DB_PASSWORD: passw0rd
 
 stages:
-  - test
+#  - test
   - deploy
 
 executeTests:
