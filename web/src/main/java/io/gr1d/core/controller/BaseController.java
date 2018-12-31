@@ -1,5 +1,6 @@
 package io.gr1d.core.controller;
 
+import io.gr1d.core.exception.Gr1dConstraintException;
 import io.gr1d.core.exception.Gr1dHttpException;
 import io.gr1d.core.exception.Gr1dHttpRuntimeException;
 import io.gr1d.core.response.Gr1dError;
@@ -64,6 +65,16 @@ public class BaseController {
         final Collection<Gr1dError> errors = Collections.singletonList(new Gr1dError("ExceptionWithStatus", message));
 
         return ResponseEntity.status(exception.getHttpStatus()).body(errors);
+    }
+
+    @ExceptionHandler(Gr1dConstraintException.class)
+    public ResponseEntity<Collection<Gr1dError>> handleException(final Gr1dConstraintException exception, final Locale locale) {
+        log.debug("Gr1dConstraintException while invoking Controller method", exception);
+
+        final String message = messageSource.getMessage(exception.getMessage(), null, locale);
+        final Collection<Gr1dError> errors = Collections.singletonList(new Gr1dError("ObjectError", message, exception.getProperty()));
+
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(errors);
     }
 
     /**
