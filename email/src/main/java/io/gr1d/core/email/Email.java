@@ -1,5 +1,6 @@
 package io.gr1d.core.email;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import org.springframework.util.Assert;
 
@@ -14,6 +15,8 @@ import java.util.*;
  */
 @Getter
 public class Email {
+
+    @JsonIgnore
     private final EmailService emailService;
 
     private String from;
