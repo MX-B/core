@@ -37,6 +37,7 @@
         <java.version>1.8</java.version>
 
 		<gr1d-keycloak-auth-version>1.31</gr1d-keycloak-auth-version>
+		<gr1d-keycloak-admin-version>1.3.2</gr1d-keycloak-admin-version>
         <fixture-factory-version>3.1.0</fixture-factory-version>
         <flyway-sring-test-version>5.0.0</flyway-sring-test-version>
         <guava-version>26.0-jre</guava-version>
@@ -44,6 +45,7 @@
         <keycloak-version>4.1.0.Final</keycloak-version>
         <spring-cloud-version>Finchley.RELEASE</spring-cloud-version>
         <springfox-version>2.9.2</springfox-version>
+        <feign-form-version>3.2.2</feign-form-version>
     </properties>
 
 
@@ -103,16 +105,27 @@
                 <version>${core-version}</version>
                 <scope>provided</scope>
             </dependency>
+			<dependency>
+				<groupId>io.gr1d</groupId>
+				<artifactId>keycloak-auth</artifactId>
+				<version>${gr1d-keycloak-auth-version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>io.gr1d</groupId>
+			    <artifactId>spring-keycloak-admin</artifactId>
+			    <version>${gr1d-keycloak-admin-version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>org.keycloak</groupId>
 				<artifactId>keycloak-spring-boot-starter</artifactId>
 				<version>${keycloak-version}</version>
 			</dependency>
-			<dependency>
-				<groupId>io.gr1d</groupId>
-				<artifactId>keycloak-auth</artifactId>
-				<version>${gr1d-keycloak-auth-version}</version>
+
+	        <dependency>
+				<groupId>io.github.openfeign.form</groupId>
+				<artifactId>feign-form</artifactId>
+				<version>${feign-form-version}</version>
 			</dependency>
 
             <dependency>
@@ -135,7 +148,6 @@
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger2</artifactId>
                 <version>${springfox-version}</version>
-                <scope>provided</scope>
             </dependency>
 
             <dependency>
