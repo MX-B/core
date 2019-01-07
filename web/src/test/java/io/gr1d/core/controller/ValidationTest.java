@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -42,6 +43,23 @@ public class ValidationTest {
 //                .andExpect(jsonPath("$[0].message").value("CPF ou CNPJ inválido"))
 //                .andExpect(jsonPath("$[0].meta").value("document_number"))
                 .andExpect(jsonPath("$[1].timestamp").isNotEmpty());
+    }
+
+    @Test
+    public void testValidationLocalDate() throws Exception {
+        mockMvc.perform(get("/validate?date_start=2018-12-01"))
+                .andDo(print())
+                .andExpect(status().isOk());
+        mockMvc.perform(get("/validate"))
+                .andDo(print())
+                .andExpect(status().isOk());
+        mockMvc.perform(get("/validate?date_start=abcd-12-01"))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0].error").value("ObjectError"))
+                .andExpect(jsonPath("$[0].message").value("Invalid format"))
+                .andExpect(jsonPath("$[0].meta").value("date_start"));
     }
 }
 
