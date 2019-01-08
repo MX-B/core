@@ -39,7 +39,15 @@ public class IterablePage<T> implements Iterator<T>, Iterable<T> {
 
     @Override
     public T next() {
-        return hasNext() ? page.getContent().get(currentIndex++) : null;
+        return hasNext() ? getNext() : null;
+    }
+
+    private T getNext() {
+        if (page == null || !hasNextInCurrentPage()) {
+            page = requester.requestPage(ofNullable(page).map(p -> p.getPage() + 1).orElse(0));
+            currentIndex = 0;
+        }
+        return page.getContent().get(currentIndex++);
     }
 
     @Override

@@ -75,6 +75,17 @@ public class IterablePageTest {
         assertThat(list.get(6)).isEqualTo("Page 2 | Index 0");
     }
 
+    @Test
+    public void testIterableEmpty() {
+        final IterablePage<String> iterable = new IterablePage<>(requester);
+        when(requester.requestPage(anyInt())).thenReturn(page(0, 20, 0, 0));
+
+        final List<String> list = new ArrayList<>();
+        iterable.forEach(list::add);
+
+        assertThat(list).hasSize(0);
+    }
+
     private Gr1dPage<String> page(final int page, final int size, final int totalElements, final int currentPageSize) {
         final Gr1dPage<String> result = new Gr1dPage<>();
         result.setContent(new ArrayList<>(size));
