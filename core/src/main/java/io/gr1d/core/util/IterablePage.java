@@ -19,11 +19,15 @@ public class IterablePage<T> implements Iterator<T>, Iterable<T> {
 
     @Override
     public boolean hasNext() {
-        return page == null || hasNextInCurrentPage() || hasMorePages();
+        if (page == null) {
+            page = requester.requestPage(ofNullable(page).map(p -> p.getPage() + 1).orElse(0));
+            currentIndex = 0;
+        }
+        return hasNextInCurrentPage() || hasMorePages();
     }
 
     private boolean hasNextInCurrentPage() {
-        return page.getContent().size() > (currentIndex + 1);
+        return page.getContent().size() > currentIndex;
     }
 
     private boolean hasMorePages() {
@@ -35,17 +39,7 @@ public class IterablePage<T> implements Iterator<T>, Iterable<T> {
 
     @Override
     public T next() {
-        return hasNext() ? getNext() : null;
-    }
-
-    private T getNext() {
-        if (page == null || !hasNextInCurrentPage()) {
-            page = requester.requestPage(ofNullable(page).map(p -> p.getPage() + 1).orElse(0));
-            currentIndex = 0;
-        } else {
-            currentIndex++;
-        }
-        return page.getContent().get(currentIndex);
+        return hasNext() ? page.getContent().get(currentIndex++) : null;
     }
 
     @Override
