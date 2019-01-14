@@ -6,7 +6,7 @@
 
     <groupId>io.gr1d</groupId>
     <artifactId>gr1d-core-parent</artifactId>
-    <version>develop-SNAPSHOT</version>
+    <version>1.1.0</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -30,7 +30,7 @@
     </parent>
 
     <properties>
-        <core-version>1.0.3-SNAPSHOT</core-version>
+        <core-version>1.1.0</core-version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
