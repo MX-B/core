@@ -14,6 +14,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.gr1d</groupId>
+            <artifactId>gr1d-core</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
