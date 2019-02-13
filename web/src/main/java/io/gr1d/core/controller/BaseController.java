@@ -71,7 +71,9 @@ public class BaseController {
     public ResponseEntity<Collection<Gr1dError>> handleException(final Gr1dConstraintException exception, final Locale locale) {
         log.debug("Gr1dConstraintException while invoking Controller method", exception);
 
-        final String message = messageSource.getMessage(exception.getMessage(), null, locale);
+        final String message = exception.isTranslate()
+                ? messageSource.getMessage(exception.getMessage(), null, locale)
+                : exception.getMessage();
         final Collection<Gr1dError> errors = Collections.singletonList(new Gr1dError("ObjectError", message, exception.getProperty()));
 
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(errors);
