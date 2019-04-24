@@ -44,7 +44,7 @@
         <gcloud-version>0.47.0-alpha</gcloud-version>
         <keycloak-version>4.8.3.Final</keycloak-version>
         <spring-cloud-version>Greenwich.RELEASE</spring-cloud-version>
-        <springfox-version>3.2.2</springfox-version>
+        <springfox-version>2.9.2</springfox-version>
         <feign-form-version>3.8.0</feign-form-version>
     </properties>
 
