@@ -1,11 +1,12 @@
 package io.gr1d.core.util;
 
-import io.gr1d.core.model.Gr1dPage;
+import static java.util.Optional.ofNullable;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Iterator;
 
-import static java.util.Optional.ofNullable;
+import io.gr1d.core.model.Gr1dPage;
 
 public class IterablePage<T> implements Iterator<T>, Iterable<T> {
 
@@ -32,7 +33,7 @@ public class IterablePage<T> implements Iterator<T>, Iterable<T> {
 
     private boolean hasMorePages() {
         final int pages = BigDecimal.valueOf(page.getTotalElements())
-                .divide(BigDecimal.valueOf(page.getSize()), BigDecimal.ROUND_UP)
+                .divide(BigDecimal.valueOf(page.getSize()), RoundingMode.UP)
                 .intValue();
         return (page.getPage() + 1) < pages;
     }
