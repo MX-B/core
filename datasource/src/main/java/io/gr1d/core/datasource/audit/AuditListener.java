@@ -83,7 +83,7 @@ public class AuditListener {
                 builder.append(field.get(entity) != null ? field.get(entity).toString():"");
                 builder.append(";");
             } catch (IllegalAccessException exception) {
-                log.info("Tried to access illegal field "+ field + " while auditing.");
+                log.warn("Tried to access illegal field "+ field + " while auditing.");
             }
         }
         return builder.toString();
@@ -96,7 +96,7 @@ public class AuditListener {
         try {
             return mapper.writeValueAsString(entity);
         } catch (JsonProcessingException exception) {
-            log.info("Failed while serializing object for auditing.");
+            log.error("Failed while serializing object for auditing.");
             return extractFieldValues(entity);
         }
     }
@@ -107,12 +107,20 @@ public class AuditListener {
             return;
         }
         LoggedUser loggeduser = BeanUtil.getBean(LoggedUser.class);
-        audit.setUserInfo(loggeduser.getEmail());
-        audit.setUserKeycloakId(loggeduser.getId());
 
-        Instant instant = Instant.ofEpochSecond(loggeduser.getIssuedAt());
-        LocalDateTime date = instant.atZone(ZoneId.systemDefault()).toLocalDateTime();
-        audit.setTokenIssuedAt(date);
+        if (loggeduser != null) {
+            audit.setUserInfo(loggeduser.getEmail() != null ? loggeduser.getEmail() : "");
+            audit.setUserKeycloakId(loggeduser.getId() != null ? loggeduser.getId() : "");
+
+            Instant instant = Instant.ofEpochSecond(loggeduser.getIssuedAt());
+            LocalDateTime date = instant.atZone(ZoneId.systemDefault()).toLocalDateTime();
+            audit.setTokenIssuedAt(date);
+        } else {
+            audit.setUserInfo("not found");
+            audit.setUserKeycloakId("");
+            audit.setTokenIssuedAt(LocalDateTime.now());
+        }
+
     }
 
     private boolean checkActiveProfileTest() {
