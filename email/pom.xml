@@ -6,7 +6,7 @@
     <parent>
         <artifactId>gr1d-core-parent</artifactId>
         <groupId>io.gr1d</groupId>
-        <version>develop-SNAPSHOT</version>
+        <version>1.4.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
