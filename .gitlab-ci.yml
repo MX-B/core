@@ -10,14 +10,14 @@ services:
 
 variables:
   MAVEN_CLI_OPTS: "-Dmaven.repo.local=.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true --batch-mode --errors --fail-at-end"
-  DOCKER_HOST: docker
-  MYSQL_DATABASE: gr1d_test
-  MYSQL_ROOT_PASSWORD: passw0rd
-  DB_URL: mysql
-  DB_PORT: 3306
-  DB_NAME: gr1d_test
-  DB_USER: root
-  DB_PASSWORD: passw0rd
+  #DOCKER_HOST: docker
+  #MYSQL_DATABASE: gr1d_test
+  #MYSQL_ROOT_PASSWORD: passw0rd
+  #DB_URL: mysql
+  #DB_PORT: 3306
+  #DB_NAME: gr1d_test
+  #DB_USER: root
+  #DB_PASSWORD: passw0rd
 
 stages:
 #  - test
